@@ -1,0 +1,1 @@
+const int FONT_SIZE_10 = 10;
