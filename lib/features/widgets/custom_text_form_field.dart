@@ -10,7 +10,7 @@ class CustomTextFormField extends StatelessWidget {
     this.scrollPadding,
     this.controller,
     this.focusNode,
-    this.autofocus = true,
+    this.autofocus = false,
     this.textStyle,
     this.obscureText = false,
     this.textInputAction = TextInputAction.next,
@@ -27,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
     this.fillColor,
     this.filled = false,
     this.validator,
+    this.onChanged
   }) : super(
           key: key,
         );
@@ -75,6 +76,8 @@ class CustomTextFormField extends StatelessWidget {
 
   final FormFieldValidator<String>? validator;
 
+  final Function(String)? onChanged;
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -91,11 +94,10 @@ class CustomTextFormField extends StatelessWidget {
           scrollPadding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           controller: controller,
-          focusNode: focusNode ?? FocusNode(),
           autofocus: autofocus!,
           style: textStyle ??
               TextStyle(
-                color: primaryColor.withOpacity(0.4),
+                color: primaryColor,
                 fontSize: 14.fSize,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.w500,
@@ -106,6 +108,7 @@ class CustomTextFormField extends StatelessWidget {
           maxLines: maxLines ?? 1,
           decoration: decoration,
           validator: validator,
+          onChanged: onChanged,
         ),
       );
 
@@ -127,7 +130,7 @@ class CustomTextFormField extends StatelessWidget {
         filled: filled,
         border: borderDecoration ??
             OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.h),
+              borderRadius: BorderRadius.circular(14.h),
               borderSide: BorderSide(
                 color: primaryColor.withOpacity(0.1),
                 width: 1,
@@ -135,7 +138,7 @@ class CustomTextFormField extends StatelessWidget {
             ),
         enabledBorder: borderDecoration ??
             OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.h),
+              borderRadius: BorderRadius.circular(14.h),
               borderSide: BorderSide(
                 color: primaryColor.withOpacity(0.1),
                 width: 1,
@@ -143,9 +146,9 @@ class CustomTextFormField extends StatelessWidget {
             ),
         focusedBorder: borderDecoration ??
             OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.h),
-              borderSide: BorderSide(
-                color: primaryColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(14.h),
+              borderSide: const BorderSide(
+                color: primaryColor,
                 width: 1,
               ),
             ),

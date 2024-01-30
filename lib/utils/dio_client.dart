@@ -4,14 +4,25 @@ class DioClient {
   static const String baseUrl = 'https://api.example.com'; // Replace with your API base URL
 
   Dio _dio = Dio();
-
   DioClient() {
     _dio = Dio(BaseOptions(
       baseUrl: baseUrl,
       connectTimeout: const Duration(milliseconds: 5000),
       receiveTimeout: const Duration(milliseconds: 5000),
     ));
+    Map<String, String> headers = <String, String>{
+      'Accept': 'application/json',
+      'content-type': 'text/plain',
+    };
 
+    _dio.options.headers = headers;
+    _dio.interceptors.add(LogInterceptor(
+      request: true,
+      requestBody: true,
+      requestHeader: true,
+      responseBody: true,
+      responseHeader: true,
+    ));
   }
 
   Future<Response> get(String endpoint, {Map<String, dynamic>? queryParameters}) async {
@@ -53,5 +64,4 @@ class DioClient {
       throw Exception('Failed to make DELETE request: $e');
     }
   }
-
 }

@@ -1,11 +1,10 @@
 import 'dart:async';
 
-// ignore: depend_on_referenced_packages
-import 'package:bloc/bloc.dart';
-import 'package:bloc_boiler_plate/features/authentication/login/model/user_model.dart';
-import 'package:bloc_boiler_plate/features/authentication/login/repository/auth_repository.dart';
+import 'package:bloc_boiler_plate/features/authentication/model/user_model.dart';
+import 'package:bloc_boiler_plate/features/authentication/repository/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
