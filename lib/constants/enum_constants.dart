@@ -1,3 +1,10 @@
+enum Environment {
+  development,
+  staging,
+  production,
+}
+
+///Dummy enum for flavors with key and value
 enum Flavor {
   chocolate,
   vanilla,

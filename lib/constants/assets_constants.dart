@@ -1,3 +1,4 @@
+const String appLogo = 'assets/images/appLogo.png';
 const String errorIcon = 'assets/icons/error.svg';
 const String emptyIcon = 'assets/icons/empty.svg';
 const String noInternetIcon = 'assets/icons/no_internet.svg';
