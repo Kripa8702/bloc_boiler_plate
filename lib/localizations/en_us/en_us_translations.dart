@@ -7,7 +7,7 @@ final Map<String, String> enUs = {
 
 
   // Login Screen
-  "lbl_email": "Email",
+  "lbl_username": "Username",
   "msg_don_t_have_an_account": "Don’t have an account?",
   "msg_forgot_password": "Forgot Password?",
 

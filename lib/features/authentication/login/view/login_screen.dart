@@ -16,12 +16,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
-
   static Widget builder(BuildContext context) {
     return BlocProvider<LoginBloc>(
         create: (context) =>
             LoginBloc(authRepo: context.read<AuthRepository>()),
-        child: LoginScreen());
+        child: const LoginScreen());
   }
 
   @override
@@ -37,108 +36,119 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(top: 11.v),
-            child: Container(
-              margin: EdgeInsets.only(bottom: 5.v),
-              padding: EdgeInsets.symmetric(horizontal: 32.h),
-              child: Column(
-                children: [
-                  _buildPageHeader(context),
-                  SizedBox(height: 21.v),
-                  SizedBox(height: 115.v),
-                  CustomTextFormField(
-                    controller: emailController,
-                    hintText: "lbl_email".tr,
-                    textInputType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null ||
-                          (!isValidEmail(value, isRequired: true))) {
-                        return "err_msg_please_enter_valid_email".tr;
-                      }
-                      return null;
-                    },
-                    onChanged: (value){
-                      setState(() {
-
-                      });
-                    },
-                  ),
-                  SizedBox(height: 24.v),
-                  CustomTextFormField(
-                    controller: passwordController,
-                    hintText: "lbl_password".tr,
-                    textInputAction: TextInputAction.done,
-                    textInputType: TextInputType.visiblePassword,
-                    validator: (value) {
-                      if (value == null ||
-                          (!isValidPassword(value, isRequired: true))) {
-                        return "err_msg_please_enter_valid_password".tr;
-                      }
-                      return null;
-                    },
-                    obscureText: true,
-                  ),
-                  SizedBox(height: 26.v),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Text(
-                        "msg_forgot_password".tr,
-                        style: CustomTextStyles.labelLarge
-                            .copyWith(decoration: TextDecoration.underline),
+    return BlocConsumer<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if(state.status == LoginStatus.success) {
+          NavigatorService.pushNamedAndRemoveUntil(
+              AppRoutes.landingPageScreen);
+        }
+      },
+      builder: (context, state) {
+        return SafeArea(
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(top: 11.v),
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 5.v),
+                  padding: EdgeInsets.symmetric(horizontal: 32.h),
+                  child: Column(
+                    children: [
+                      _buildPageHeader(context),
+                      SizedBox(height: 21.v),
+                      SizedBox(height: 115.v),
+                      CustomTextFormField(
+                        controller: emailController,
+                        hintText: "lbl_username".tr,
+                        textInputType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null ||
+                              (!isText(value, isRequired: true))) {
+                            return "err_msg_please_enter_valid_email".tr;
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {});
+                        },
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 55.v),
-                  CustomElevatedButton(
-                    text: "lbl_next".tr,
-                    buttonStyle: CustomButtonStyles.fillBlue,
-                    buttonTextStyle: CustomTextStyles.titleMedium.copyWith(
-                      color: secondaryTextColor,
-                      fontSize: 16.fSize,
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        NavigatorService.pushNamedAndRemoveUntil(
-                            AppRoutes.landingPageScreen);
-                      }
-                    },
-                  ),
-                  SizedBox(height: 28.v),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 1.v),
-                          child: Text("msg_don_t_have_an_account".tr,
-                              style: CustomTextStyles.labelLarge),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 8.h),
+                      SizedBox(height: 24.v),
+                      CustomTextFormField(
+                        controller: passwordController,
+                        hintText: "lbl_password".tr,
+                        textInputAction: TextInputAction.done,
+                        textInputType: TextInputType.visiblePassword,
+                        validator: (value) {
+                          if (value == null ||
+                              (!isValidPassword(value, isRequired: true))) {
+                            return "err_msg_please_enter_valid_password".tr;
+                          }
+                          return null;
+                        },
+                        obscureText: true,
+                      ),
+                      SizedBox(height: 26.v),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () {},
                           child: Text(
-                            "lbl_sign_up".tr,
+                            "msg_forgot_password".tr,
                             style: CustomTextStyles.labelLarge
                                 .copyWith(decoration: TextDecoration.underline),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                      SizedBox(height: 55.v),
+                      CustomElevatedButton(
+                        text: "lbl_next".tr,
+                        buttonStyle: CustomButtonStyles.fillBlue,
+                        buttonTextStyle: CustomTextStyles.titleMedium.copyWith(
+                          color: secondaryTextColor,
+                          fontSize: 16.fSize,
+                        ),
+                        isLoading: state.status == LoginStatus.loading,
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            context.read<LoginBloc>().add(Login(
+                                email: emailController.text,
+                                password: passwordController.text));
+
+                          }
+                        },
+                      ),
+                      SizedBox(height: 28.v),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 1.v),
+                              child: Text("msg_don_t_have_an_account".tr,
+                                  style: CustomTextStyles.labelLarge),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 8.h),
+                              child: Text(
+                                "lbl_sign_up".tr,
+                                style: CustomTextStyles.labelLarge.copyWith(
+                                    decoration: TextDecoration.underline),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 

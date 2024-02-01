@@ -1,3 +1,3 @@
 const String authentication = '/auth';
 
-const String login = 'login';
+const String login = '$authentication/login';

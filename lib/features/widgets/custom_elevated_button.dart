@@ -4,10 +4,12 @@ import 'package:bloc_boiler_plate/utils/size_utils.dart';
 import 'package:flutter/material.dart';
 
 class CustomElevatedButton extends BaseButton {
-  const CustomElevatedButton({super.key,
+  const CustomElevatedButton({
+    super.key,
     this.decoration,
     this.leftIcon,
     this.rightIcon,
+    this.isLoading = false,
     EdgeInsets? margin,
     VoidCallback? onPressed,
     ButtonStyle? buttonStyle,
@@ -35,6 +37,8 @@ class CustomElevatedButton extends BaseButton {
 
   final Widget? rightIcon;
 
+  final bool isLoading;
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -53,19 +57,26 @@ class CustomElevatedButton extends BaseButton {
         child: ElevatedButton(
           style: buttonStyle,
           onPressed: isDisabled ?? false ? null : onPressed ?? () {},
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              leftIcon ?? const SizedBox.shrink(),
-              Text(
-                text,
-                style: buttonTextStyle ??
-                    CustomTextStyles.titleSmall,
-              ),
-              rightIcon ?? const SizedBox.shrink(),
-            ],
-          ),
+          child: isLoading
+              ? const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    leftIcon ?? const SizedBox.shrink(),
+                    Text(
+                      text,
+                      style: buttonTextStyle ?? CustomTextStyles.titleSmall,
+                    ),
+                    rightIcon ?? const SizedBox.shrink(),
+                  ],
+                ),
         ),
       );
 }

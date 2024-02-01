@@ -18,4 +18,16 @@ class SimpleBlocObserver extends BlocObserver {
     print(error);
     super.onError(bloc, error, stackTrace);
   }
+
+  @override
+  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
+    super.onChange(bloc, change);
+    print(change);
+  }
+
+  @override
+  void onEvent(Bloc<dynamic, dynamic> bloc, Object? event) {
+    super.onEvent(bloc, event);
+    print(event);
+  }
 }

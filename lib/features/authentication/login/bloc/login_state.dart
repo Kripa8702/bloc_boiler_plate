@@ -4,25 +4,26 @@ enum LoginStatus { initial, loading, success, failure }
 
 class LoginState extends Equatable {
   const LoginState({
-    this.emailController,
-    this.passwordController,
     this.status = LoginStatus.initial,
+    this.user,
+    this.message
   });
-  final TextEditingController? emailController;
-  final TextEditingController? passwordController;
   final LoginStatus status;
+  final UserModel? user;
+  final String? message;
 
   LoginState copyWith({
     UserModel? user,
     LoginStatus? status,
+    String? message
   }) {
     return LoginState(
-      emailController: emailController ?? emailController,
-      passwordController: passwordController ?? passwordController,
       status: status ?? this.status,
+      user: user ?? this.user,
+      message: message ?? this.message
     );
   }
 
   @override
-  List<Object?> get props => [emailController, passwordController, status];
+  List<Object?> get props => [status, user, message];
 }
